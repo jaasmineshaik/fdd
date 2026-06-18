@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FD Calculator</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background:linear-gradient(135deg,#4f46e5,#dadae2);
+            padding:20px;
+        }
+
+        .calculator{
+            width:100%;
+            max-width:500px;
+            background:#fff;
+            padding:30px;
+            border-radius:15px;
+            box-shadow:0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .calculator h1{
+            text-align:center;
+            color:#333;
+            margin-bottom:25px;
+        }
+
+        .input-section{
+            margin-bottom:20px;
+        }
+
+        .input-section label{
+            display:block;
+            margin-bottom:8px;
+            font-weight:bold;
+            color:#444;
+            text-transform:capitalize;
+        }
+
+        .input-section input[type="range"]{
+            width:100%;
+            accent-color:#4f46e5;
+            cursor:pointer;
+        }
+
+        .input-section span{
+            display:block;
+            margin-top:8px;
+            text-align:right;
+            color:#4f46e5;
+            font-weight:bold;
+        }
+
+        button{
+            width:100%;
+            padding:12px;
+            border:none;
+            border-radius:8px;
+            background:#4f46e5;
+            color:white;
+            font-size:16px;
+            font-weight:bold;
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        button:hover{
+            background:#4338ca;
+        }
+
+        .output-section{
+            margin-top:25px;
+            padding:20px;
+            background:#f8f9ff;
+            border-radius:10px;
+            border:1px solid #ddd;
+        }
+
+        .output-section p{
+            display:flex;
+            justify-content:space-between;
+            margin:12px 0;
+            font-size:16px;
+            color:#333;
+        }
+
+        .output-section span{
+            color:#16a34a;
+            font-weight:bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="calculator">
+        <h1>FD CALCULATOR</h1>
+
+        <div class="input-section">
+            <label for="investment">investment</label>
+            <input type="range" id="investment" min="1000" max="1000000" step="1000" value="1000000">
+            <span id="investment-value">1000000</span>
+        </div>
+
+        <div class="input-section">
+            <label for="intrest-rate">rate of intrest</label>
+            <input type="range" id="intrest-rate" min="0" max="18" step="0.1" value="6.5">
+            <span id="intrest-rate-value">6.5%</span>
+        </div>
+
+        <div class="input-section">
+            <label for="time-period">tenure</label>
+            <input type="range" id="time-period" min="1" max="65" step="1" value="6">
+            <span id="time-period-value">6 years</span>
+        </div>
+
+        <button onclick="calculator()">Invest</button>
+
+        <div class="output-section">
+            <p>Invested Amount: <span id="invested-amount">---</span></p>
+            <p>Estimated Amount: <span id="estimated-amount">---</span></p>
+            <p>Total Amount: <span id="total-amount">---</span></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const investmentInput = document.getElementById("investment");
+            const interestRateInput = document.getElementById("intrest-rate");
+            const timePeriodInput = document.getElementById("time-period");
+
+            investmentInput.addEventListener("input", function () {
+                updatedInvestmentValue(this.value);
+            });
+
+            timePeriodInput.addEventListener("input", function () {
+                updatedTimePeriodValue(this.value);
+            });
+
+            interestRateInput.addEventListener("input", function () {
+                updatedInterestRateValue(this.value);
+            });
+
+            updatedInvestmentValue(investmentInput.value);
+            updatedInterestRateValue(interestRateInput.value);
+            updatedTimePeriodValue(timePeriodInput.value);
+        });
+
+        function calculator() {
+            const p = parseFloat(document.getElementById("investment").value);
+            const r = parseFloat(document.getElementById("intrest-rate").value);
+            const t = parseFloat(document.getElementById("time-period").value);
+
+            const n = 4;
+
+            const total = p * Math.pow(1 + (r / 100) / n, n * t);
+            const i = total - p;
+
+            document.getElementById("invested-amount").innerText =
+                `${Math.round(p).toLocaleString('en-IN')}`;
+
+            document.getElementById("estimated-amount").innerText =
+                `${Math.round(i).toLocaleString('en-IN')}`;
+
+            document.getElementById("total-amount").innerText =
+                `${Math.round(total).toLocaleString('en-IN')}`;
+        }
+
+        function updatedInvestmentValue(value)
+        {
+            document.getElementById("investment-value").innerText =
+                `${parseFloat(value).toLocaleString('en-IN')}`;
+        }
+
+        function updatedInterestRateValue(value)
+        {
+            document.getElementById("intrest-rate-value").innerText =
+                `${parseFloat(value).toFixed(1)}%`;
+        }
+
+        function updatedTimePeriodValue(value)
+        {
+            document.getElementById("time-period-value").innerText =
+                `${value} years`;
+        }
+    </script>
+</body>
+</html>
